@@ -1,0 +1,129 @@
+{
+    "metadata": {
+        "source_type": "Mainframe JCL",
+        "description": "DFSMS Storage Management Rules"
+    },
+    "steps": [
+        {
+            "step_name": "STEP031",
+            "action": "DEFINE",
+            "extracted_rules": {
+                "SCDS": "'CPAC.DFSMS.SCDS'",
+                "STORGRP": "SGIXXX",
+                "DESCR": "STORAGE GROUP FOR DB2",
+                "AUTOMIG": "N",
+                "MIGSYSNM": null,
+                "AUTOBKUP": "N",
+                "BKUPSYS": null,
+                "AUTODUMP": null,
+                "DMPSYSNM": null,
+                "OVRFLOW": null,
+                "EXTSGNM": null,
+                "DUMPCLAS": null,
+                "HIGHTHRS": "85",
+                "LOWTHRS": "30",
+                "GUARBKFR": "NOLIMIT",
+                "SGSTATUS": null,
+                "UPDHLVLSCDS": null
+            }
+        },
+        {
+            "step_name": "STEP041",
+            "action": "UNKNOWN",
+            "extracted_rules": {
+                "BATSCRW": "132",
+                "BATSCRD": "27",
+                "BREDIMAX": "3",
+                "BDISPMAX": "99999999"
+            }
+        },
+        {
+            "step_name": "STEP051",
+            "action": "DEFINE",
+            "extracted_rules": {
+                "SCDS": "'CPAC.DFSMS.SCDS'",
+                "STCNAME": "SCIXXX",
+                "DESCR": "STORAGE CLASS FOR DB2",
+                "DMSRESP": null,
+                "DRTBIAS": null,
+                "SEQMSRES": null,
+                "SEQBIAS": null,
+                "INIARESS": null,
+                "SUSDTRT": null,
+                "AVALBTY": null,
+                "ACCSBTY": "C",
+                "GURNTSPC": null,
+                "GUASYNWR": null,
+                "MULTITSG": null,
+                "CFCACSTN": null,
+                "CFDTWGHT": null,
+                "CFSEQWHT": null,
+                "UPDHLVLSCDS": null
+            }
+        },
+        {
+            "step_name": "STEP055",
+            "action": "DISPLAY",
+            "extracted_rules": {
+                "SCDS": "'CPAC.DFSMS.SCDS'",
+                "STCNAME": "SCIXXX"
+            }
+        },
+        {
+            "step_name": "STEP061",
+            "action": "DEFINE",
+            "extracted_rules": {
+                "SCDS": "'CPAC.DFSMS.SCDS'",
+                "DCNAME": "DCIXXX",
+                "DESCR": "DATA CLASS FOR DB2",
+                "RECORG": null,
+                "RECFM": null,
+                "LRECL": null,
+                "KEYLEN": null,
+                "KEYOFF": null,
+                "SPCAVREC": null,
+                "SPCAVVAL": null,
+                "SPCPRM": null,
+                "SPCSEC": null,
+                "SPCDIR": null,
+                "REXPPDT": null,
+                "VOLCNT": "255",
+                "ADDVOLAM": null,
+                "CISZDATA": null,
+                "FRSPCCI": null,
+                "FRSPCCA": null,
+                "SHRXREG": null,
+                "SHRXSYS": null,
+                "COMPTN": null,
+                "MDTYPE": null,
+                "RECTECH": null,
+                "DSNMTYP": "EXT",
+                "IFEXT": "R",
+                "EXTADDRS": "Y",
+                "RECACCB": "U",
+                "REUSE": null,
+                "INILOAD": null,
+                "SPANONSP": null,
+                "BWO": null,
+                "LOG": null,
+                "LOGSTID": null,
+                "SPCCONRL": null,
+                "REDSPCUT": null,
+                "MAXVOL": null,
+                "UPDHLVLSCDS": null,
+                "BATSCRW": "132",
+                "BATSCRD": "27",
+                "BREDIMAX": "3",
+                "BDISPMAX": "99999999"
+            }
+        },
+        {
+            "step_name": "STEP065",
+            "action": "DISPLAY",
+            "extracted_rules": {
+                "SCDS": "'CPAC.DFSMS.SCDS'",
+                "DCNAME": "DCIXXX"
+            }
+        }
+    ]
+}
