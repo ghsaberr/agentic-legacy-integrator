@@ -1,0 +1,31 @@
+{
+    "apiVersion": "v1",
+    "kind": "StorageProvisioningRequest",
+    "metadata": {
+        "serviceName": "DB2_Modernization_DB",
+        "environment": "production"
+    },
+    "spec": {
+        "storageClass": {
+            "name": "SCIXXX",
+            "description": "STORAGE CLASS FOR DB2",
+            "sla": {
+                "highAvailability": true
+            }
+        },
+        "capacityPlanning": {
+            "quotas": {
+                "maxVolumes": 255
+            },
+            "autoScaling": {
+                "enabled": true,
+                "scaleOutThresholdPercent": 85,
+                "scaleInThresholdPercent": 30
+            }
+        },
+        "dataLifecycle": {
+            "autoTieringEnabled": false,
+            "backupPolicy": "NOLIMIT"
+        }
+    }
+}
