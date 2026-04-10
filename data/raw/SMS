@@ -1,0 +1,216 @@
+//IBMUSER8 JOB (ACCNT-INFO),'IBM ZOS DEFAULT USER',MSGCLASS=T,
+//          NOTIFY=IBMUSER,REGION=0M,CLASS=A
+//*** JOB CARD GENERATED AUTOMATICALLY ***
+//ACBJBAOB PROC CLIST1='SYS1.DGTCLIB',             /* ISMF CLIST LIB */
+//             PLIB1='SYS1.DGTPLIB',               /* ISMF PANEL LIB */
+//             LOAD1='SYS1.DGTLLIB',               /* ISMF LOAD LIB  */
+//             MLIB1='SYS1.DGTMLIB',               /* ISMF MSG LIB   */
+//             TABL2='CPAC.DFSMS.ISPTABL'          /* SAVED ISMF TBLS*/
+//*
+//ISMF     EXEC PGM=IKJEFT01,
+//             COND=(4,LT),
+//             DYNAMNBR=50,REGION=(6144K),TIME=(300)
+//STEPLIB   DD DISP=SHR,DSN=&LOAD1
+//          DD DISP=SHR,DSN=ISP.SISPLOAD
+//ISPPLIB   DD DISP=SHR,DSN=&PLIB1,BLKSIZE=0       /* NVQUEST PANELS */
+//          DD DISP=SHR,DSN=ISP.SISPPENU           /* ISPF PANELS    */
+//ISPMLIB   DD DISP=SHR,DSN=&MLIB1,BLKSIZE=0       /* NVQUEST MSGS   */
+//          DD DISP=SHR,DSN=ISP.SISPMENU           /* ISPF MESSAGES  */
+//ISPSLIB   DD DISP=SHR,DSN=ISP.SISPSENU,          /* ISPF SKELETONS */
+//             BLKSIZE=0
+//          DD DISP=SHR,DSN=SYS1.DGTSLIB           /* ISMF SKELETONS */
+//ISPTLIB   DD DSN=&&TEMP,
+//             DISP=NEW,
+//             UNIT=SYSDA,SPACE=(TRK,(1,1,1)),
+//             DCB=(ISP.SISPTENU)
+//          DD DISP=SHR,DSN=&TABL2
+//          DD DISP=SHR,DSN=ISP.SISPTENU            /* ISPF TABLES   */
+//          DD DISP=SHR,DSN=SYS1.DGTTLIB            /* ISMF TABLES   */
+//SYSPROC   DD DISP=SHR,DSN=&CLIST1,
+//             BLKSIZE=0
+//          DD DISP=SHR,DSN=ISP.SISPCLIB            /* ISPF CLISTS   */
+//ISPTABL   DD DISP=SHR,DSN=&TABL2,BLKSIZE=0
+//SYSPRINT  DD SYSOUT=*
+//SYSUDUMP  DD SYSOUT=*
+//SYSTSPRT  DD SYSOUT=(,),OUTLIM=20000
+//ISPLOG    DD SYSOUT=(,),DCB=(LRECL=125,BLKSIZE=129,RECFM=VA)
+//ISPPROF   DD DSN=&&PROF,
+//             DISP=(NEW,DELETE,DELETE),
+//             DCB=(ISP.SISPTENU),SPACE=(TRK,(1,1,1)),UNIT=SYSDA
+//         PEND
+//*
+//*--------------------------------------------------------------------
+//* STEP021: CREATE A DATA SET FOR SAVING ISMF TABLES
+//*--------------------------------------------------------------------
+//*STEP021 EXEC PGM=IEFBR14,COND=(4,LT)
+//*ISPTABL  DD DSN=CPAC.DFSMS.ISPTABL,
+//*            DISP=(NEW,CATLG),VOL=SER=Z12CAT,
+//*            UNIT=3390,SPACE=(CYL,(20,5,20)),
+//*            LIKE=SYS1.DGTTLIB
+//*
+//*--------------------------------------------------------------------
+//* STEP031: SET UP A DEFINE FOR A STORAGE GROUP
+//*--------------------------------------------------------------------
+//STEP031 EXEC ACBJBAOB,COND=(4,LT)
+//SYSUDUMP DD SYSOUT=*
+//TEMPFILE DD DSN=&&TEMPFILE,
+//            DISP=(,PASS),
+//            UNIT=SYSDA,SPACE=(TRK,(1,1)),
+//            DCB=(LRECL=300,RECFM=F,BLKSIZE=300)
+//SYSTSIN  DD *
+  ISPSTART +
+    CMD(ACBQBAJ2 DEFINE +
+        SCDS('CPAC.DFSMS.SCDS') +
+        STORGRP(SGIXXX) +
+        DESCR(STORAGE GROUP FOR DB2) +
+        AUTOMIG(N) +
+        MIGSYSNM() +
+        AUTOBKUP(N) +
+        BKUPSYS() +
+        AUTODUMP() +
+        DMPSYSNM() +
+        OVRFLOW() +
+        EXTSGNM() +
+        DUMPCLAS() +
+        HIGHTHRS(85) +
+        LOWTHRS(30)  +
+        GUARBKFR(NOLIMIT) +
+        SGSTATUS() +
+        UPDHLVLSCDS()  +
+       )
+//*
+//*--------------------------------------------------------------------
+//* STEP035: PROCESS THE ABOVE SETUP REQUEST
+//*--------------------------------------------------------------------
+//STEP035 EXEC ACBJBAOB,COND=(4,LT)
+//SYSUDUMP DD SYSOUT=*
+//SYSTSIN  DD DSN=&&TEMPFILE,DISP=(OLD,DELETE)
+//*
+//*--------------------------------------------------------------------
+//* STEP041: SET UP AN ADD VOLUME(S) TO STORAGE GROUP(S)
+//*--------------------------------------------------------------------
+//STEP041 EXEC ACBJBAOB,COND=(4,LT)
+//SYSUDUMP DD SYSOUT=*
+//TEMPFILE DD DSN=&&VOLADDS,
+//            DISP=(,PASS),
+//            UNIT=SYSDA,SPACE=(TRK,(1,1)),
+//            DCB=(LRECL=80,RECFM=F,BLKSIZE=80)
+//SYSTSIN  DD *
+  ISPSTART +
+    CMD(ACBQBAI9) +
+    BATSCRW(132) BATSCRD(27) BREDIMAX(3) BDISPMAX(99999999)
+//VOLADD   DD *
+  UPDHLVLSCDS(Y)
+  SCDSNAME('CPAC.DFSMS.SCDS') +
+    VOL(INHI1A) SG(SGIXXX) STATUS(ENABLE)
+//VOLALT   DD *
+//VOLDEL   DD *
+//*
+//*--------------------------------------------------------------------
+//* STEP045: PROCESS THE ABOVE SETUP REQUEST
+//*--------------------------------------------------------------------
+//STEP045   EXEC ACBJBAOB,COND=(4,LT)
+//SYSUDUMP DD SYSOUT=*
+//SYSTSIN  DD DSN=&&VOLADDS,DISP=(OLD,DELETE)
+//*
+//*--------------------------------------------------------------------
+//* STEP051: DEFINE A STORAGE CLASS IN THE SCDS
+//*--------------------------------------------------------------------
+//STEP051 EXEC ACBJBAOB,COND=(4,LT)
+//SYSUDUMP DD SYSOUT=*
+//SYSTSIN  DD *
+  ISPSTART +
+    CMD(ACBQBAS1 DEFINE +
+        SCDS('CPAC.DFSMS.SCDS') +
+        STCNAME(SCIXXX) +
+        DESCR(STORAGE CLASS FOR DB2) +
+        DMSRESP() +
+        DRTBIAS() +
+        SEQMSRES() +
+        SEQBIAS() +
+        INIARESS() +
+        SUSDTRT() +
+        AVALBTY() +
+        ACCSBTY(C) +
+        GURNTSPC() +
+        GUASYNWR() +
+        MULTITSG() +
+        CFCACSTN() +
+        CFDTWGHT() +
+        CFSEQWHT() +
+        UPDHLVLSCDS()  +
+        )
+//*
+//*--------------------------------------------------------------------
+//* STEP055: DISPLAY A STORAGE CLASS IN THE SCDS
+//*--------------------------------------------------------------------
+//STEP055 EXEC ACBJBAOB,COND=(4,LT)
+//SYSUDUMP DD SYSOUT=*
+//SYSTSIN  DD *
+  ISPSTART +
+    CMD(ACBQBAS1 DISPLAY +
+        SCDS('CPAC.DFSMS.SCDS') +
+        STCNAME(SCIXXX) +
+        )
+//*
+//*--------------------------------------------------------------------
+//* STEP061: DEFINE A DATA CLASS IN THE SCDS
+//*--------------------------------------------------------------------
+//STEP061 EXEC ACBJBAOB,COND=(4,LT)
+//SYSUDUMP DD SYSOUT=*
+//SYSTSIN  DD *
+  ISPSTART +
+    CMD(ACBQBAD1 DEFINE +
+        SCDS('CPAC.DFSMS.SCDS') +
+        DCNAME(DCIXXX) +
+        DESCR(DATA CLASS FOR DB2) +
+        RECORG() +
+        RECFM() +
+        LRECL() +
+        KEYLEN() +
+        KEYOFF() +
+        SPCAVREC() +
+        SPCAVVAL() +
+        SPCPRM() +
+        SPCSEC() +
+        SPCDIR() +
+        REXPPDT() +
+        VOLCNT(255) +
+        ADDVOLAM() +
+        CISZDATA() +
+        FRSPCCI() +
+        FRSPCCA() +
+        SHRXREG() +
+        SHRXSYS() +
+        COMPTN() +
+        MDTYPE() +
+        RECTECH() +
+        DSNMTYP(EXT) +
+        IFEXT(R) +
+        EXTADDRS(Y) +
+        RECACCB(U) +
+        REUSE() +
+        INILOAD() +
+        SPANONSP() +
+        BWO() +
+        LOG() +
+        LOGSTID() +
+        SPCCONRL() +
+        REDSPCUT() +
+        MAXVOL() +
+        UPDHLVLSCDS()  +
+       ) +
+    BATSCRW(132) BATSCRD(27) BREDIMAX(3) BDISPMAX(99999999)
+//*
+//*--------------------------------------------------------------------
+//* STEP065: DISPLAY A DATA CLASS IN THE SCDS
+//*--------------------------------------------------------------------
+//STEP065 EXEC ACBJBAOB,COND=(4,LT)
+//SYSUDUMP DD SYSOUT=*
+//SYSTSIN  DD *
+  ISPSTART +
+    CMD(ACBQBAD1 DISPLAY +
+        SCDS('CPAC.DFSMS.SCDS') +
+        DCNAME(DCIXXX) +
+        )
+//*
