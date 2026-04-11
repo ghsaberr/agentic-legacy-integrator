@@ -1,0 +1,34 @@
+{
+    "storageRules": [
+        {
+            "storageGroup": {
+                "name": "CPAC.DFSMS.SCDS",
+                "description": "STORAGE GROUP FOR DB2",
+                "maxVolumes": 255,
+                "scaleOutThreshold": 85,
+                "guaranteedSpace": "NOLIMIT"
+            }
+        },
+        {
+            "storageClass": {
+                "name": "CPAC.DFSMS.SCDS",
+                "description": "STORAGE CLASS FOR DB2",
+                "accessControlType": "C"
+            }
+        },
+        {
+            "dataClass": {
+                "name": "CPAC.DFSMS.SCDS",
+                "description": "DATA CLASS FOR DB2",
+                "reusePolicy": null,
+                "iniLoad": null,
+                "spansOnSpacePool": null,
+                "bwo": null,
+                "log": null,
+                "logStorageID": null,
+                "redundancyPolicy": null,
+                "maxVolume": null
+            }
+        }
+    ]
+}
